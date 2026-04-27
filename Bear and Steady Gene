@@ -1,0 +1,51 @@
+class Result {
+
+    /*
+     * Complete the 'steadyGene' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts STRING gene as parameter.
+     */
+
+    public static int steadyGene(String gene) {
+    // Write your code here
+    
+        int n = gene.length();
+        int target = n / 4;
+
+        int[] freq = new int[128];
+
+        for (char c : gene.toCharArray())
+        {
+            freq[c]++;
+        }
+
+        if (isSteady(freq, target)) 
+        {
+            return 0;
+        }
+
+        int minLen = n;
+        int left = 0;
+
+        for (int right = 0; right < n; right++) 
+        {
+            freq[gene.charAt(right)]--;
+            while (left < n && isSteady(freq, target)) 
+            {
+                minLen = Math.min(minLen, right - left + 1);
+                freq[gene.charAt(left)]++;
+                left++;
+            }
+        }
+
+        return minLen;
+    }
+    private static boolean isSteady(int[] freq, int target) {
+        return freq['A'] <= target &&
+               freq['C'] <= target &&
+               freq['G'] <= target &&
+               freq['T'] <= target;
+    }
+
+}
